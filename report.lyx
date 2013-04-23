@@ -1,0 +1,369 @@
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
+\begin_document
+\begin_header
+\textclass article
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_amsmath 1
+\use_esint 1
+\use_mhchem 1
+\use_mathdots 1
+\cite_engine basic
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 1in
+\topmargin 1in
+\rightmargin 1in
+\bottommargin 1in
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation skip
+\defskip bigskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+ECE540/489 Assignment 5 Project
+\end_layout
+
+\begin_layout Author
+Zhaohan (Daniel) Guo #997658583 ID:guozhaoh
+\end_layout
+
+\begin_layout Date
+April 15, 2013
+\end_layout
+
+\begin_layout Section
+Overview of source
+\end_layout
+
+\begin_layout Standard
+I included the READMEs from the previous assignments as a reference.
+\end_layout
+
+\begin_layout Description
+main.cpp -- this came from the original template, and I haven't modified
+ the the contents
+\end_layout
+
+\begin_layout Description
+print.(h/c) -- from printsimple
+\end_layout
+
+\begin_layout Description
+common.h -- common stuff for my code
+\end_layout
+
+\begin_layout Description
+bitvecset.(h/cpp) -- dynamic bit set based off of the given bitvector.(h/c)
+ -- written in more standard C++ using STL
+\end_layout
+
+\begin_layout Description
+instr.(h/cpp) -- lists of instructions
+\end_layout
+
+\begin_layout Description
+block.(h/cpp) -- basic blocks and edges
+\end_layout
+
+\begin_layout Description
+cfg.(h/cpp) -- control flow graph
+\end_layout
+
+\begin_layout Description
+dom.(h/cpp) -- dominance (either normal or post)
+\end_layout
+
+\begin_layout Description
+loop.(h/cpp) -- natural loops
+\end_layout
+
+\begin_layout Description
+dfa.(h/cpp) -- dataflow analysis engine
+\end_layout
+
+\begin_layout Description
+reachdefs.(h/cpp) -- reaching definitions analysis and def-use and use-def
+ chains
+\end_layout
+
+\begin_layout Description
+loop.(h/cpp) -- finding natural loops and preheaders
+\end_layout
+
+\begin_layout Description
+licm.(h/cpp) -- loop invariant code motion
+\end_layout
+
+\begin_layout Description
+constant.(h/cpp) -- constant propagation and folding
+\end_layout
+
+\begin_layout Description
+dce.(h/cpp) -- deadcode elimination
+\end_layout
+
+\begin_layout Description
+temp.(h/cpp) -- turns pseudo registers into temporary registers where possible
+\end_layout
+
+\begin_layout Description
+copyprop.(h/cpp) -- copy propagation
+\end_layout
+
+\begin_layout Description
+cse.(h/cpp) -- common subexpression elimination
+\end_layout
+
+\begin_layout Description
+interpreter.(h/cpp) -- compile time interpretation
+\end_layout
+
+\begin_layout Description
+doproc.cpp -- the function that does the stuff per procedure
+\end_layout
+
+\begin_layout Section
+Overview of Optimizations
+\end_layout
+
+\begin_layout Subsection
+General
+\end_layout
+
+\begin_layout Standard
+I went for simplicity of implementation over efficiency.
+ My optimizations mostly only make small, incremental changes to the instruction
+s, before all of the necessary structures for the analysis is rebuilt again.
+ For example, before every optimization, I rebuild the CFG again from the
+ instruction list; if an optimization needs def-use chains, I rebuild the
+ def-use chain from scratch before running the optimization.
+ This is to avoid keeping the structures consistent and up to date in an
+ online fashion, which is more difficult.
+\end_layout
+
+\begin_layout Standard
+As I was pressed for time, I also went for optimizations that had the best
+ payoff in terms of optimized speed vs.
+ implementation time.
+ My optimizations aren't fully general and in many cases only partially
+ implemented to have the most impact on the testcases.
+\end_layout
+
+\begin_layout Subsection
+Constant Propagation and Folding
+\end_layout
+
+\begin_layout Standard
+This is in constant.(h/cpp).
+ I use the def-use and use-def chains made from reaching definitions instead
+ of creating a new dataflow analysis.
+ I do both constant propagation and folding.
+ This is a shallow optimization, which means I only propagate constants
+ once - from completely constant registers to their immediate uses.
+ This needs to be executed in a loop to keep propagating the constants.
+ For constant folding, I support many instructions, but I left out a few
+ because they weren't going to help get more speed on the testcases.
+\end_layout
+
+\begin_layout Subsection
+Deadcode Elimination
+\end_layout
+
+\begin_layout Standard
+This is in dce.(h/cpp).
+ This is where I implemented a simplified version of deadcode elimination.
+ I just assume all control flow instructions are essential, instead of doing
+ a postdominator type check.
+\end_layout
+
+\begin_layout Subsection
+Loop Invariant Code Motion
+\end_layout
+
+\begin_layout Standard
+This is in licm.(h/cpp).
+ This is almost implemented exactly as in the lecture slides.
+ I relaxed one of the constraints that an instruction must dominate all
+ the exits of the loop to also allow it to be moved when the instruction
+ has no effect on anything outside the loop.
+ This is a tradeoff because it's possible to make the program slower if
+ certain branches in the loop aren't taken, but I felt like this made sense
+ for our testcases.
+ I also don't move memory instructions because I don't do alias analysis.
+\end_layout
+
+\begin_layout Subsection
+Copy Propagation
+\end_layout
+
+\begin_layout Standard
+This is in copyprop.(h/cpp).
+ The distinction between temporary registers and pseudo registers makes
+ this a little less straightforward, but basically only pseudo registers
+ can be propagated.
+ This is really helpful because my other optimizations often result in copying
+ around things, but not so much on its own.
+\end_layout
+
+\begin_layout Subsection
+Common Subexpression Elimination
+\end_layout
+
+\begin_layout Standard
+This is in cse.(h/cpp).
+ I only support a subset of expressions that I try to eliminate, mainly
+ the ones that appear in the testcases.
+ I also do a slightly different version of reaching evaluations.
+ Instead of finding the earliest reaching evaluation, I find the closest.
+ This is due to my dataflow framework only being able to work with bit vectors.
+ To make up for it, running this optimization several times should propagate
+ the common subexpression up earlier and earlier and probably achieve the
+ same effect.
+\end_layout
+
+\begin_layout Subsection
+Temporary Register Conversion
+\end_layout
+
+\begin_layout Standard
+This is in temp.(h/cpp).
+ This is an artifact of the SimpleSUIF IR and my optimizations.
+ Because my optimizations have to copy and move things around, they use
+ pseudo registers all the time.
+ But after many optimization passes, the copies may all be gone and it may
+ be possible to use a temporary register in lieu of a pseudo register.
+ That is exactly what this optimization does - it looks for pseudo registers
+ that are defined and used only once in a basic block, and converts it to
+ a temporary register.
+\end_layout
+
+\begin_layout Subsection
+Compile Time Interpretation
+\end_layout
+
+\begin_layout Standard
+This is in interpreter.(h/cpp).
+ This is just for testprog.c.
+ Instead of doing more loop optimizations like loop fusion or partial loop
+ unrolling, I decided that since many of the functions were simple, it was
+ better to just interpret them at compile time.
+ This way, the whole loop disappears and the function becomes trivial, maximizin
+g speed.
+ My interpreter is very simple, and can only handle signed integers, addition
+ and multiplication, and at most one unknown variable.
+ It would be possible to handle much more, such as floating point numbers,
+ more unary and binary operations, even simple memory operations with simple
+ alias analysis.
+\end_layout
+
+\begin_layout Subsection
+Environment Flags
+\end_layout
+
+\begin_layout Description
+ECE540_DISABLE_CONSTANT_OPTS -- constant propagation and folding
+\end_layout
+
+\begin_layout Description
+ECE540_DISABLE_DCE -- deadcode elimination
+\end_layout
+
+\begin_layout Description
+ECE540_DISABLE_TEMP -- temporary register conversion
+\end_layout
+
+\begin_layout Description
+ECE540_DISABLE_LICM -- loop invariant code motion
+\end_layout
+
+\begin_layout Description
+ECE540_DISABLE_COPY_PROP -- copy propagation
+\end_layout
+
+\begin_layout Description
+ECE540_DISABLE_CSE -- common subexpression elimination
+\end_layout
+
+\begin_layout Description
+ECE540_DISABLE_INTERPRETER -- compile time interpretation
+\end_layout
+
+\begin_layout Section
+Other Notes
+\end_layout
+
+\begin_layout Subsection
+Warning: cvt_to_trees - node 641 used across expressions (promoted)
+\end_layout
+
+\begin_layout Standard
+Sometimes I get this kind of warning when running s2c.
+ This is caused by a definition of a temporary register and the usage of
+ that register being separated by some specific instructions (such as an
+ assignment to a pseudo register) that cause s2c to put them into separate
+ expressions.
+ I just let this one be and didn't try to handle it.
+ To handle it properly, you would need to reorder instructions, which will
+ involve finding dependencies and some kind of instruction scheduling.
+\end_layout
+
+\begin_layout Subsection
+Temporary Registers
+\end_layout
+
+\begin_layout Standard
+I was really not clear initially on how temporary registers were supposed
+ to be used and their limitations.
+ One thing that tripped me up was that SimpleSUIF considers function calls
+ to also delimit basic blocks, whereas for our assignments we treated them
+ like ordinary instructions, so temporary registers could not be used across
+ a call instruction.
+\end_layout
+
+\end_body
+\end_document

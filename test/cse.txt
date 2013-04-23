@@ -1,0 +1,118 @@
+
+Procedure main:
+	ldc  (f.64)	t11 = 0.000000
+	cpy  (f.64)	r9 = t11
+	ldc  (s.32)	t12 = 0
+	cpy  (s.32)	r1 = t12
+L8:
+	cvt  (f.64)	t13 = r1
+	add  (f.64)	t14 = r9, t13
+	cpy  (f.64)	r9 = t14
+	ldc  (f.64)	t15 = 200.000000
+	sl   (s.32)	t16 = t15, r9
+	bfls		t16, L3
+	ldc  (f.64)	t17 = 300.000000
+	sub  (f.64)	t18 = r9, t17
+	cpy  (f.64)	r9 = t18
+L3:
+	ldc  (a.32)	t19 = &x + 0
+	ldc  (s.32)	t20 = 8
+	mul  (s.32)	t21 = r1, t20
+	add  (a.32)	t22 = t19, t21
+	str 		*t22 = r9
+L1:
+	ldc  (s.32)	t23 = 1
+	add  (s.32)	t24 = r1, t23
+	cpy  (s.32)	r1 = t24
+	ldc  (s.32)	t25 = 10000
+	sle  (s.32)	t26 = t25, r1
+	bfls		t26, L8
+L2:
+	ldc  (s.32)	t27 = 1
+	cpy  (s.32)	r1 = t27
+L9:
+	ldc  (a.32)	t28 = &x + 0
+	ldc  (s.32)	t29 = 8
+	mul  (s.32)	t30 = r1, t29
+	ldc  (s.32)	t31 = 8
+	add  (s.32)	t32 = t30, t31
+	add  (a.32)	t33 = t28, t32
+	load (f.64)	t34 = *t33
+	cvt  (s.32)	t35 = t34
+	cpy  (s.32)	r2 = t35
+	ldc  (a.32)	t36 = &x + 0
+	ldc  (s.32)	t37 = 8
+	mul  (s.32)	t38 = r1, t37
+	ldc  (s.32)	t39 = 8
+	sub  (s.32)	t40 = t38, t39
+	add  (a.32)	t41 = t36, t40
+	load (f.64)	t42 = *t41
+	cvt  (s.32)	t43 = t42
+	cpy  (s.32)	r3 = t43
+	add  (s.32)	t44 = r2, r3
+	cpy  (s.32)	r4 = t44
+	add  (s.32)	t45 = r2, r3
+	add  (s.32)	t46 = t45, r4
+	cpy  (s.32)	r5 = t46
+	add  (s.32)	t47 = r2, r3
+	add  (s.32)	t48 = t47, r4
+	add  (s.32)	t49 = t48, r5
+	cpy  (s.32)	r6 = t49
+	add  (s.32)	t50 = r2, r3
+	add  (s.32)	t51 = t50, r4
+	add  (s.32)	t52 = t51, r5
+	add  (s.32)	t53 = t52, r6
+	cpy  (s.32)	r7 = t53
+	add  (s.32)	t54 = r2, r3
+	add  (s.32)	t55 = t54, r4
+	add  (s.32)	t56 = t55, r5
+	add  (s.32)	t57 = t56, r6
+	add  (s.32)	t58 = t57, r7
+	ldc  (s.32)	t59 = 200
+	rem  (s.32)	t60 = t58, t59
+	cpy  (s.32)	r8 = t60
+	ldc  (a.32)	t61 = &x + 0
+	ldc  (s.32)	t62 = 8
+	mul  (s.32)	t63 = r1, t62
+	add  (a.32)	t64 = t61, t63
+	cvt  (f.64)	t65 = r8
+	str 		*t64 = t65
+L4:
+	ldc  (s.32)	t66 = 1
+	add  (s.32)	t67 = r1, t66
+	cpy  (s.32)	r1 = t67
+	ldc  (s.32)	t68 = 9999
+	sle  (s.32)	t69 = t68, r1
+	bfls		t69, L9
+L5:
+	ldc  (a.32)	t70 = &fopen + 0
+	ldc  (a.32)	t71 = &__tmp_string_0 + 0
+	ldc  (a.32)	t72 = &__tmp_string_1 + 0
+	call (a.32)	t73 = *t70 (t71, t72)
+	cpy  (a.32)	r10 = t73
+	ldc  (s.32)	t74 = 10
+	cpy  (s.32)	r1 = t74
+L10:
+	ldc  (a.32)	t75 = &fprintf + 0
+	ldc  (a.32)	t76 = &__tmp_string_2 + 0
+	ldc  (a.32)	t77 = &x + 0
+	ldc  (s.32)	t78 = 8
+	mul  (s.32)	t79 = r1, t78
+	add  (a.32)	t80 = t77, t79
+	load (f.64)	t81 = *t80
+	call (s.32)	*t75 (r10, t76, r1, t81)
+L6:
+	ldc  (s.32)	t82 = 1
+	add  (s.32)	t83 = r1, t82
+	cpy  (s.32)	r1 = t83
+	ldc  (s.32)	t84 = 20
+	sle  (s.32)	t85 = t84, r1
+	bfls		t85, L10
+L7:
+	ldc  (a.32)	t86 = &fclose + 0
+	call (s.32)	*t86 (r10)
+	ldc  (a.32)	t87 = &exit + 0
+	ldc  (s.32)	t88 = 0
+	call (s.32)	*t87 (t88)
+	ldc  (s.32)	t89 = 0
+	ret 		t89

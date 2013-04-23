@@ -1,0 +1,26 @@
+#!/bin/bash
+
+hwbin=~/ece489/optimizingcompilers/assign5/wrapper
+
+# given a path to the test directory
+cd test
+
+# optimize the files
+for testfile in *.tmp
+do
+	# strip away the extension
+	t=${testfile%.tmp}
+	
+	echo -n "$t optimizing..."
+	
+	# optimize it
+	${hwbin} $t.tmp $t.spx >/dev/null 2>&1
+	
+	# run it
+	echo -n "running..."
+	ssbe $t
+	
+	# print out the cost
+	echo -n "cost is "
+	./evaluate-cost $t.ss
+done

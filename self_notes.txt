@@ -1,0 +1,233 @@
+========================================================================
+some notes of my own
+========================================================================
+
+============ A1 =============
+
+An empty procedure still contains a ret instruction, so the given instruction
+list doesn't seem like it should ever be empty.
+
+The last instruction of a procedure isn't always a ret. One of my test cases
+showed it can be a label as well for some reason. So I'm not going to assume
+that it ends with a ret.
+
+There should only be one entry point to a procedure - the first instruction.
+
+Seems like there is always a default label in a multiway branch.
+
+The reference treats calls like ordinary instructions so I will too.
+
+The reference seems to output pred and succ lists in sorted order so I will too.
+
+The target of a branch is always a label, so by assuming all labels are targets
+that takes care of both those cases together.
+
+What if you have a link to yourself? Looks like my algorithms still work fine.
+
+============ A2 =============
+
+I will try to assume as little as possible moving forward and try to be more
+general to avoid rewriting things if any assumptions are wrong.
+
+**Remember that std::list has a sort method so I should use that one.
+
+Have to switch to using a std::list to store the intructions so that instructions
+can be added/removed/changed easily. Because of this, have to change basic blocks
+to also be in a std::list to also facilitate easy modification. Then basic blocks
+must link to an iterator for the first instruction. Then all work should be
+done for basic blocks, so we shouldn't need a link from instructions back to
+basic blocks. Also that means preds and succs now contain iterators.
+
+The numbering of the basic blocks and instructions is now implicit in the order
+and is generated as you pass through them.
+
+============ A3 =============
+
+Try to keep the simple_instr consistent whenever there's changes in edges
+or whatnot.
+
+Don't forget to make the succs for Entry and Exit properly.
+
+Don't forget about edges to the special error block. I'm maintaining that
+there should be none of them in succs.
+
+Should change isDead to isReachable or something because dead code is
+not the same as unreachable code.
+
+Assume unused registers are set to NO_REGISTER.
+
+Need to check whether procedure pointers in CALL_FORM count as a variable.
+
+I number variables starting from 0.
+
+Why does the reference solution not use real names? Instead it uses
+only pseudo registers and uses pseudo register number as a name. So I have
+to change my variables to only be pseudo registers and their numbers.
+
+The DFA right now doesn't really take into account unreachable code either
+from Entry or not connecting to Exit, which may be bad later on.
+
+============ A4 =============
+
+Remember to correct loops and dominance.
+
+How should I encode the expressions for the table lookup? The most general
+way seems to be to convert it into a string. Or to use my own tuple class.
+
+I also number expressions starting from 0, and convert on print.
+
+================= Project (A5) =================
+
+------------------------------------------------------------------------
+Short description of the source files:
+------------------------------------------------------------------------
+
+I included the READMEs from the previous assignments as a reference.
+
+main.cpp
+	-- this came from the original template, and I haven't modified the
+	the contents
+
+print.(h/c)
+	-- from printsimple
+
+common.h
+	-- common stuff for my code
+
+bitvecset.(h/cpp)
+	-- dynamic bit set based off of the given bitvector.(h/c)
+	-- written in more standard C++ using STL
+
+instr.(h/cpp)
+	-- lists of instructions
+
+block.(h/cpp)
+	-- basic blocks and edges
+
+cfg.(h/cpp)
+	-- control flow graph
+
+dom.(h/cpp)
+	-- dominance (either normal or post)
+
+loop.(h/cpp)
+	-- natural loops
+
+dfa.(h/cpp)
+	-- dataflow analysis engine
+
+reachdefs.(h/cpp)
+	-- reaching definitions analysis and def-use and use-def chains
+
+loop.(h/cpp)
+	-- finding natural loops and preheaders
+
+licm.(h/cpp)
+	-- loop invariant code motion
+
+constant.(h/cpp)
+	-- constant propagation and folding
+
+dce.(h/cpp)
+	-- deadcode elimination
+
+temp.(h/cpp)
+	-- turns pseudo registers into temporary registers where possible
+
+copyprop.(h/cpp)
+	-- copy propagation
+
+cse.(h/cpp)
+	-- common subexpression elimination
+
+doproc.cpp
+	-- the function that does the stuff per procedure
+
+------------------------------------------------------------------------
+
+I'm going to make many of my analysis simply able to be repeated as the
+CFG is changed, rather than doing in-place changes. For example, if the
+basic blocks change, then I'll recalculate dominance for all nodes again
+rather than incrementally updating it.
+
+I guess I'm going to keep the instruction list around and update it in
+place though. And sometimes I'll keep the CFG around as well.
+
+
+Loop invariant code motion
+Loop induction variables/strength reduction are all probably big winners
+Copy propagation, constant propagation/folding, will all help but only
+with the above loop optimizations.
+
+**remember, blocks may link to themselves**
+
+Need to be careful of the pseudo and temp registers.
+
+ARG TRICKY PREHEADER STUFF! Screw it, just make one preheader at a time.
+
+CLEAN UP AFTER CONSTANTS i.e. get rid of dangling temp regs.
+
+The printsimple library segfaults on NOPS I think.
+
+LICM
+- don't require it to dominate exits, as long as it's not used outside of the loop
+- I don't do aliasing analysis so can't move memory instructions for licm.
+
+
+From arrays:
+- CSE can help
+- induction variables
+
+Cond:
+- CSE/local value numbering (by coincidence if we remove the unused label)
+- induction variables
+
+cse:
+- local value numbering/cse (but local value numbering might be more effective)
+	- maybe use a trick to also do local cse
+	- duplicate every expression to store to another register that just keeps it around
+- value ranges to eliminate conditional branches
+
+dotprod:
+- cse/local value numbering
+- induction variable
+
+mmult:
+- local value numbering/cse
+- induction variable
+
+sor:
+- cse/local value numbering
+- induction variable
+
+testprog
+- induction variables
+- deadcode elimination
+- running it at compile time
+- alias analysis
+- loop unrolling
+- loop fusion
+
+CSE + copy propagation probably more worth it than local value numbering
+Copy propagation - beware of non equivalent src and dest types
+for CSE - do some kind of naive aliasing analysis? like if there are no stores,
+then it's all good
+
+A lot of my optimizations aren't completely general - my constant folding doesn't
+fold all possible instructions like shifts and rotations - I don't do algebraic
+simplifications because I didn't see a need for it. I tried to do the optimizations
+that would benefit most, while keeping my design general enough e.g. You can add
+support for folding shifts and rotations relatively easily.
+
+Seems like I may need another optimization for turning pseudo regs back into
+temp regs when possible.
+
+Warning: cvt_to_trees - node 641 used across expressions (promoted)
+There's a cvt_to_trees warning, but that's sort of beyond my control.
+
+#define CONSTANT_OPTS_ENV "ECE540_DISABLE_CONSTANT_OPTS"
+#define DCE_ENV "ECE540_DISABLE_DCE"
+#define TEMP_ENV "ECE540_DISABLE_TEMP"
+#define LICM_ENV "ECE540_DISABLE_LICM"
+#define COPY_PROP_ENV "ECE540_DISABLE_COPY_PROP"
+#define CSE_ENV "ECE540_DISABLE_CSE"

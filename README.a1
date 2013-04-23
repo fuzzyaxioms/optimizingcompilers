@@ -1,0 +1,29 @@
+UTORid: guozhaoh
+Assignment 1
+
+Notes on code:
+
+I might be a little inconsistent with the type of my loop indices; sometimes I
+use int and sometimes I use unsigned long.
+
+I couldn't directly use the iterative algorithm from lecture to find all
+dominators because some basic blocks weren't reachable from Entry i.e. were
+dead code. You need to ignore the dead code blocks when looking for dominators
+so I just slightly modified the algorithm by not using all predecessors - only
+the predecessors that had Entry as a dominator (the iterations will propagate
+the fact that a block doesn't have Entry as a dominator and eventually the
+condition will be satisfied). The algorithm still only makes the sets smaller so
+it's still going to halt.
+
+I didn't use the algorithm from lecture to find direct dominators. I assume a
+dominator tree exists, and thus the direct dominator is the parent in this tree.
+Then the dominators of the parent are all of its ancestors. So from the tree you
+can see that the direct dominator is the dominator with the most dominators in
+common, i.e. has all of the other dominators as ancestors. So I just loop over
+the dominators of a block and check if their dominators match all of the block's
+dominators.
+
+My test cases involving dead code made the reference program segfault, so I'm
+a little bit unsure my code will handle extreme test cases that I didn't think of.
+I did take into account blocks with no predecessors, and that the last instruction
+in a procedure isn't always a ret so you can have blocks with no successors.

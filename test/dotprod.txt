@@ -1,0 +1,121 @@
+
+Procedure vector_dotprod:
+	ldc  (s.32)	t10 = 0
+	sl   (s.32)	t11 = t10, r4
+	bfls		t11, L6
+	ldc  (s.32)	t12 = 0
+	cpy  (s.32)	r5 = t12
+L7:
+	ldc  (s.32)	t13 = 0
+	cpy  (s.32)	r6 = t13
+L5:
+	cvt  (a.32)	t14 = r2
+	ldc  (s.32)	t15 = 4
+	mul  (s.32)	t16 = r5, t15
+	add  (a.32)	t17 = t14, t16
+	load (s.32)	t18 = *t17
+	cpy  (s.32)	r7 = t18
+	cvt  (a.32)	t19 = r3
+	ldc  (s.32)	t20 = 4
+	mul  (s.32)	t21 = r5, t20
+	add  (a.32)	t22 = t19, t21
+	load (s.32)	t23 = *t22
+	cpy  (s.32)	r8 = t23
+	cvt  (a.32)	t24 = r2
+	ldc  (s.32)	t25 = 4
+	mul  (s.32)	t26 = r5, t25
+	add  (a.32)	t27 = t24, t26
+	load (s.32)	t28 = *t27
+	cvt  (a.32)	t29 = r3
+	ldc  (s.32)	t30 = 4
+	mul  (s.32)	t31 = r5, t30
+	add  (a.32)	t32 = t29, t31
+	load (s.32)	t33 = *t32
+	mul  (s.32)	t34 = t28, t33
+	cpy  (s.32)	r9 = t34
+	cvt  (a.32)	t35 = r1
+	ldc  (s.32)	t36 = 4
+	mul  (s.32)	t37 = r5, t36
+	add  (a.32)	t38 = t35, t37
+	str 		*t38 = r9
+L3:
+	ldc  (s.32)	t39 = 1
+	add  (s.32)	t40 = r6, t39
+	cpy  (s.32)	r6 = t40
+	ldc  (s.32)	t41 = 5
+	sle  (s.32)	t42 = t41, r6
+	bfls		t42, L5
+L4:
+L1:
+	ldc  (s.32)	t43 = 1
+	add  (s.32)	t44 = r5, t43
+	cpy  (s.32)	r5 = t44
+	sle  (s.32)	t45 = r4, r5
+	bfls		t45, L7
+L2:
+	jmp 		__done8
+L6:
+	ldc  (s.32)	t46 = 0
+	cpy  (s.32)	r5 = t46
+__done8:
+	ret 		
+
+Procedure main:
+	ldc  (s.32)	t3 = 0
+	cpy  (s.32)	r1 = t3
+L5:
+	ldc  (a.32)	t4 = &A + 0
+	ldc  (s.32)	t5 = 4
+	mul  (s.32)	t6 = r1, t5
+	add  (a.32)	t7 = t4, t6
+	add  (s.32)	t8 = r1, r1
+	str 		*t7 = t8
+	ldc  (a.32)	t9 = &B + 0
+	ldc  (s.32)	t10 = 4
+	mul  (s.32)	t11 = r1, t10
+	add  (a.32)	t12 = t9, t11
+	str 		*t12 = r1
+L1:
+	ldc  (s.32)	t13 = 1
+	add  (s.32)	t14 = r1, t13
+	cpy  (s.32)	r1 = t14
+	ldc  (s.32)	t15 = 1000
+	sle  (s.32)	t16 = t15, r1
+	bfls		t16, L5
+L2:
+	ldc  (a.32)	t17 = &vector_dotprod + 0
+	ldc  (a.32)	t18 = &C + 0
+	ldc  (a.32)	t19 = &A + 0
+	ldc  (a.32)	t20 = &B + 0
+	ldc  (s.32)	t21 = 1000
+	call (v.0)	*t17 (t18, t19, t20, t21)
+	ldc  (a.32)	t22 = &fopen + 0
+	ldc  (a.32)	t23 = &__tmp_string_0 + 0
+	ldc  (a.32)	t24 = &__tmp_string_1 + 0
+	call (a.32)	t25 = *t22 (t23, t24)
+	cpy  (a.32)	r2 = t25
+	ldc  (s.32)	t26 = 0
+	cpy  (s.32)	r1 = t26
+L6:
+	ldc  (a.32)	t27 = &fprintf + 0
+	ldc  (a.32)	t28 = &__tmp_string_2 + 0
+	ldc  (a.32)	t29 = &C + 0
+	ldc  (s.32)	t30 = 4
+	mul  (s.32)	t31 = r1, t30
+	add  (a.32)	t32 = t29, t31
+	load (s.32)	t33 = *t32
+	call (s.32)	*t27 (r2, t28, r1, t33)
+L3:
+	ldc  (s.32)	t34 = 20
+	add  (s.32)	t35 = r1, t34
+	cpy  (s.32)	r1 = t35
+	ldc  (s.32)	t36 = 1000
+	sle  (s.32)	t37 = t36, r1
+	bfls		t37, L6
+L4:
+	ldc  (a.32)	t38 = &fclose + 0
+	call (s.32)	*t38 (r2)
+	ldc  (a.32)	t39 = &exit + 0
+	ldc  (s.32)	t40 = 0
+	call (s.32)	*t39 (t40)
+	ret 		

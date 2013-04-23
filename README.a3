@@ -1,0 +1,84 @@
+========================================================================
+UTORid: guozhaoh
+Assignment 3
+========================================================================
+
+I included the READMEs from the previous assignments as a reference.
+
+------------------------------------------------------------------------
+Short description of the source files:
+------------------------------------------------------------------------
+
+main.cpp
+prog_ver.cc
+suif_init.cc
+	-- these came from the original template, and I haven't modified the
+	the contents
+
+print.(h/c)
+	-- from printsimple
+
+common.h
+	-- common stuff for my code
+
+bitvecset.(h/cpp)
+	-- dynamic bit set based off of the given bitvector.(h/c)
+	-- written in more standard C++ using STL
+
+instr.(h/cpp)
+	-- lists of instructions
+
+block.(h/cpp)
+	-- basic blocks and edges
+
+cfg.(h/cpp)
+	-- control flow graph
+
+dom.(h/cpp)
+	-- dominance
+
+loop.(h/cpp)
+	-- natural loops
+
+dfa.(h/cpp)
+	-- dataflow analysis engine
+
+live.(h/cpp)
+	-- live variable analysis
+
+doproc.cpp
+	-- the function that does the stuff per procedure
+
+------------------------------------------------------------------------
+Notes on code:
+------------------------------------------------------------------------
+
+I converted indentation to use tabs - probably not worth the trouble.
+
+Extracted instructions and basic blocks from CFG into 2 more files:
+instr and block; I don't really like big monolithic files. There are a
+whole bunch of source files all together, and I'm not sure how to have
+the Makefile handle subdirectories, so it's just a little messy.
+
+Instead of having predecessors and successors just be lists to other
+basic blocks, I decided to make a separate data structure to represent
+an edge (BlockEdge) that stores the source and destination of an edge. It
+also has what type of edge it is: a fall through edge, a conditional jump
+edge, an unconditional jump, a return, a default label in a MBR, or a
+label in the array of labels of the MBR. This extra information will be
+helpful in avoiding that corner case that was brought up on the discussion
+board, because now you can differentiate a fall through from a jump. Also,
+each basic block will also have a corresponding type depending on its
+last instruction, to determine what kind of successors it has. This
+hopefully will be helpful later.
+
+This change breaks the current natural loop code, but I'll fix it later
+since the current assignment doesn't need loops. It also breaks the
+dominators code (though it should be a simple fix), and since this
+assignment also doesn't need them, I'll fix it later.
+
+I number variables starting from zero in my code. The converstion to the
+specs happens when I'm printing out the numbers.
+
+I use a work list (more specifically a queue) to implement the iterative
+data flow algorithm.

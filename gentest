@@ -1,0 +1,41 @@
+#!/bin/bash
+
+hwbin=~/ece489/optimizingcompilers/assign5/project
+psbin=~/ece489/printsimple/printsimple
+refbin=/cad2/ece540s/reference/assign2Ref
+
+# given a path to the test directory
+cd "$1"
+
+# generate the files
+for testfile in *.c
+do
+	# strip away the extension
+	t=${testfile%.c}
+	
+	echo generating $t
+	
+	# compile if needed
+	if [[ $t.c -nt $t.tmp ]]
+	then
+		ssfe $t.c
+	fi
+	
+	# print out instructions if needed
+	if [[ $t.tmp -nt $t.txt ]]
+	then
+		$psbin $t.tmp > $t.txt
+	fi
+	
+	# make reference if needed
+	if [[ $t.tmp -nt $t.ref ]]
+	then
+		$refbin $t.tmp > $t.ref
+	fi
+	
+	# output if needed
+	if [[ $t.tmp -nt $t.out ]]
+	then
+		$hwbin $t.tmp > $t.out 2>&1
+	fi
+done

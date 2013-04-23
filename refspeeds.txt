@@ -1,0 +1,7 @@
+arrays optimizing...running...cost is 3712021
+cond optimizing...running...cost is 135411
+cse optimizing...running...cost is 1243447
+dotprod optimizing...running...cost is 368189
+mmult optimizing...running...cost is 58071085
+sor optimizing...running...cost is 374665908
+testprog optimizing...running...cost is 59645

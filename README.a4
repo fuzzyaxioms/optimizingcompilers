@@ -1,0 +1,70 @@
+========================================================================
+UTORid: guozhaoh
+Assignment 4
+========================================================================
+
+I included the READMEs from the previous assignments as a reference.
+
+------------------------------------------------------------------------
+Short description of the source files:
+------------------------------------------------------------------------
+
+main.cpp
+prog_ver.cc
+suif_init.cc
+	-- these came from the original template, and I haven't modified the
+	the contents
+
+print.(h/c)
+	-- from printsimple
+
+common.h
+	-- common stuff for my code
+
+bitvecset.(h/cpp)
+	-- dynamic bit set based off of the given bitvector.(h/c)
+	-- written in more standard C++ using STL
+
+instr.(h/cpp)
+	-- lists of instructions
+
+block.(h/cpp)
+	-- basic blocks and edges
+
+cfg.(h/cpp)
+	-- control flow graph
+
+dom.(h/cpp)
+	-- dominance **broken**
+
+loop.(h/cpp)
+	-- natural loops **broken**
+
+dfa.(h/cpp)
+	-- dataflow analysis engine
+
+live.(h/cpp)
+	-- live variable analysis
+
+avail.(h/cpp)
+	-- available expressions analysis
+
+doproc.cpp
+	-- the function that does the stuff per procedure
+
+------------------------------------------------------------------------
+Notes on code:
+------------------------------------------------------------------------
+
+I was away for a few days so I didn't have time to clean up dominators
+and loops like I wanted, so those are still broken.
+
+For available expressions, only look for expressions that use pseudo
+registers.
+
+Seems like unary expressions are also counted (i.e. CVT, NEG, NOT).
+
+The code is very similar to live variable analysis, so not much going on
+in this assignment.
+
+

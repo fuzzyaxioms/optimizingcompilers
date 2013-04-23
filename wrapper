@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# set environment variables
+
+#export ECE540_DISABLE_CONSTANT_OPTS=
+#export ECE540_DISABLE_DCE=
+#export ECE540_DISABLE_TEMP=
+#export ECE540_DISABLE_LICM=
+#export ECE540_DISABLE_COPY_PROP=
+#export ECE540_DISABLE_CSE=
+#export ECE540_DISABLE_INTERPRETER=
+
+# run like normal
+~/ece489/optimizingcompilers/assign5/project $*

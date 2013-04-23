@@ -1,0 +1,265 @@
+
+Procedure f1:
+	cpy  (f.32)	r4 = r2
+	ldc  (s.32)	t6 = 0
+	cpy  (s.32)	r3 = t6
+L3:
+	cvt  (f.32)	t7 = r3
+	mul  (f.32)	t8 = r1, t7
+	cpy  (f.32)	r5 = t8
+	add  (f.32)	t9 = r4, r5
+	cpy  (f.32)	r4 = t9
+L1:
+	ldc  (s.32)	t10 = 1
+	add  (s.32)	t11 = r3, t10
+	cpy  (s.32)	r3 = t11
+	ldc  (s.32)	t12 = 300
+	sle  (s.32)	t13 = t12, r3
+	bfls		t13, L3
+L2:
+	ret 		r5
+
+Procedure f2:
+	cpy  (s.32)	r4 = r1
+	ldc  (s.32)	t5 = 0
+	cpy  (s.32)	r2 = t5
+L6:
+	ldc  (s.32)	t6 = 0
+	cpy  (s.32)	r3 = t6
+L5:
+	add  (s.32)	t7 = r4, r3
+	cpy  (s.32)	r4 = t7
+L3:
+	ldc  (s.32)	t8 = 1
+	add  (s.32)	t9 = r3, t8
+	cpy  (s.32)	r3 = t9
+	ldc  (s.32)	t10 = 3
+	sle  (s.32)	t11 = t10, r3
+	bfls		t11, L5
+L4:
+L1:
+	ldc  (s.32)	t12 = 1
+	add  (s.32)	t13 = r2, t12
+	cpy  (s.32)	r2 = t13
+	ldc  (s.32)	t14 = 300
+	sle  (s.32)	t15 = t14, r2
+	bfls		t15, L6
+L2:
+	ret 		r4
+
+Procedure f3:
+	cpy  (s.32)	r4 = r2
+	ldc  (s.32)	t6 = 0
+	cpy  (s.32)	r3 = t6
+L3:
+	mul  (s.32)	t7 = r1, r3
+	cpy  (s.32)	r5 = t7
+	add  (s.32)	t8 = r4, r5
+	cpy  (s.32)	r4 = t8
+L1:
+	ldc  (s.32)	t9 = 1
+	add  (s.32)	t10 = r3, t9
+	cpy  (s.32)	r3 = t10
+	ldc  (s.32)	t11 = 300
+	sle  (s.32)	t12 = t11, r3
+	bfls		t12, L3
+L2:
+	ret 		r5
+
+Procedure f4:
+	ldc  (s.32)	t6 = 0
+	cpy  (s.32)	r4 = t6
+	ldc  (s.32)	t7 = 0
+	cpy  (s.32)	r3 = t7
+L3:
+	add  (s.32)	t8 = r1, r2
+	cpy  (s.32)	r5 = t8
+	add  (s.32)	t9 = r4, r5
+	cpy  (s.32)	r4 = t9
+L1:
+	ldc  (s.32)	t10 = 1
+	add  (s.32)	t11 = r3, t10
+	cpy  (s.32)	r3 = t11
+	ldc  (s.32)	t12 = 300
+	sle  (s.32)	t13 = t12, r3
+	bfls		t13, L3
+L2:
+	ret 		r4
+
+Procedure f5:
+	ldc  (s.32)	t6 = 3
+	cpy  (s.32)	r4 = t6
+	ldc  (s.32)	t7 = 0
+	cpy  (s.32)	r3 = t7
+L5:
+	ldc  (s.32)	t8 = 0
+	seq  (s.32)	t9 = r4, t8
+	bfls		t9, L3
+	mul  (s.32)	t10 = r3, r1
+	cpy  (s.32)	r5 = t10
+	jmp 		__done4
+L3:
+	mul  (s.32)	t11 = r3, r2
+	cpy  (s.32)	r5 = t11
+__done4:
+L1:
+	ldc  (s.32)	t12 = 1
+	add  (s.32)	t13 = r3, t12
+	cpy  (s.32)	r3 = t13
+	ldc  (s.32)	t14 = 300
+	sle  (s.32)	t15 = t14, r3
+	bfls		t15, L5
+L2:
+	ret 		r5
+
+Procedure f6:
+	ldc  (s.32)	t4 = 0
+	cpy  (s.32)	r3 = t4
+	ldc  (s.32)	t5 = 0
+	cpy  (s.32)	r2 = t5
+L7:
+	ldc  (a.32)	t6 = &a + 0
+	ldc  (s.32)	t7 = 4
+	mul  (s.32)	t8 = r2, t7
+	add  (a.32)	t9 = t6, t8
+	str 		*t9 = r2
+L1:
+	ldc  (s.32)	t10 = 1
+	add  (s.32)	t11 = r2, t10
+	cpy  (s.32)	r2 = t11
+	ldc  (s.32)	t12 = 300
+	sle  (s.32)	t13 = t12, r2
+	bfls		t13, L7
+L2:
+	ldc  (s.32)	t14 = 0
+	cpy  (s.32)	r2 = t14
+L8:
+	ldc  (a.32)	t15 = &b + 0
+	ldc  (s.32)	t16 = 4
+	mul  (s.32)	t17 = r2, t16
+	add  (a.32)	t18 = t15, t17
+	ldc  (a.32)	t19 = &a + 0
+	ldc  (s.32)	t20 = 4
+	mul  (s.32)	t21 = r2, t20
+	add  (a.32)	t22 = t19, t21
+	load (s.32)	t23 = *t22
+	add  (s.32)	t24 = r1, t23
+	str 		*t18 = t24
+L3:
+	ldc  (s.32)	t25 = 1
+	add  (s.32)	t26 = r2, t25
+	cpy  (s.32)	r2 = t26
+	ldc  (s.32)	t27 = 300
+	sle  (s.32)	t28 = t27, r2
+	bfls		t28, L8
+L4:
+	ldc  (s.32)	t29 = 0
+	cpy  (s.32)	r2 = t29
+L9:
+	ldc  (a.32)	t30 = &b + 0
+	ldc  (s.32)	t31 = 4
+	mul  (s.32)	t32 = r2, t31
+	add  (a.32)	t33 = t30, t32
+	load (s.32)	t34 = *t33
+	add  (s.32)	t35 = r3, t34
+	cpy  (s.32)	r3 = t35
+L5:
+	ldc  (s.32)	t36 = 1
+	add  (s.32)	t37 = r2, t36
+	cpy  (s.32)	r2 = t37
+	ldc  (s.32)	t38 = 300
+	sle  (s.32)	t39 = t38, r2
+	bfls		t39, L9
+L6:
+	ret 		r3
+
+Procedure f7:
+	ldc  (s.32)	t5 = 3
+	cpy  (s.32)	r4 = t5
+	ldc  (s.32)	t6 = 0
+	cpy  (s.32)	r3 = t6
+L5:
+	ldc  (s.32)	t7 = 3
+	seq  (s.32)	t8 = r3, t7
+	bfls		t8, L3
+	cpy  (s.32)	r4 = r1
+	jmp 		__done4
+L3:
+	cpy  (s.32)	r4 = r2
+__done4:
+L1:
+	ldc  (s.32)	t9 = 1
+	add  (s.32)	t10 = r3, t9
+	cpy  (s.32)	r3 = t10
+	ldc  (s.32)	t11 = 300
+	sle  (s.32)	t12 = t11, r3
+	bfls		t12, L5
+L2:
+	ret 		r4
+
+Procedure main:
+	ldc  (s.32)	t10 = 3
+	cpy  (s.32)	r1 = t10
+	ldc  (a.32)	t11 = &f1 + 0
+	ldc  (f.32)	t12 = 4.000000
+	ldc  (f.32)	t13 = 5.000000
+	call (f.32)	t14 = *t11 (t12, t13)
+	cpy  (f.32)	r3 = t14
+	cvt  (f.32)	t15 = r1
+	add  (f.32)	t16 = t15, r3
+	cvt  (s.32)	t17 = t16
+	cpy  (s.32)	r1 = t17
+	ldc  (a.32)	t18 = &f2 + 0
+	ldc  (s.32)	t19 = 3
+	call (s.32)	t20 = *t18 (t19)
+	cpy  (s.32)	r4 = t20
+	add  (s.32)	t21 = r1, r4
+	cpy  (s.32)	r1 = t21
+	ldc  (a.32)	t22 = &f3 + 0
+	ldc  (s.32)	t23 = 4
+	ldc  (s.32)	t24 = 5
+	call (s.32)	t25 = *t22 (t23, t24)
+	cpy  (s.32)	r5 = t25
+	add  (s.32)	t26 = r1, r5
+	cpy  (s.32)	r1 = t26
+	ldc  (a.32)	t27 = &f4 + 0
+	ldc  (s.32)	t28 = 4
+	ldc  (s.32)	t29 = 5
+	call (s.32)	t30 = *t27 (t28, t29)
+	cpy  (s.32)	r6 = t30
+	add  (s.32)	t31 = r1, r6
+	cpy  (s.32)	r1 = t31
+	ldc  (a.32)	t32 = &f5 + 0
+	ldc  (s.32)	t33 = 4
+	ldc  (s.32)	t34 = 5
+	call (s.32)	t35 = *t32 (t33, t34)
+	cpy  (s.32)	r7 = t35
+	add  (s.32)	t36 = r1, r7
+	cpy  (s.32)	r1 = t36
+	ldc  (a.32)	t37 = &f6 + 0
+	ldc  (s.32)	t38 = 3
+	call (s.32)	t39 = *t37 (t38)
+	cpy  (s.32)	r8 = t39
+	add  (s.32)	t40 = r1, r8
+	cpy  (s.32)	r1 = t40
+	ldc  (a.32)	t41 = &f7 + 0
+	ldc  (s.32)	t42 = 3
+	ldc  (s.32)	t43 = 4
+	call (s.32)	t44 = *t41 (t42, t43)
+	cpy  (s.32)	r9 = t44
+	add  (s.32)	t45 = r1, r9
+	cpy  (s.32)	r1 = t45
+	ldc  (a.32)	t46 = &fopen + 0
+	ldc  (a.32)	t47 = &__tmp_string_0 + 0
+	ldc  (a.32)	t48 = &__tmp_string_1 + 0
+	call (a.32)	t49 = *t46 (t47, t48)
+	cpy  (a.32)	r2 = t49
+	ldc  (a.32)	t50 = &fprintf + 0
+	ldc  (a.32)	t51 = &__tmp_string_2 + 0
+	call (s.32)	*t50 (r2, t51, r1)
+	ldc  (a.32)	t52 = &fclose + 0
+	call (s.32)	*t52 (r2)
+	ldc  (a.32)	t53 = &exit + 0
+	ldc  (s.32)	t54 = 0
+	call (s.32)	*t53 (t54)
+	ret 		

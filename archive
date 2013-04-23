@@ -1,0 +1,4 @@
+#!/bin/sh
+
+# make the submission archive
+tar -cv Makefile *.c *.cpp *.h passkey README* report.pdf | gzip -c > project.tar.gz

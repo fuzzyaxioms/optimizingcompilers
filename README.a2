@@ -1,0 +1,26 @@
+UTORid: guozhaoh
+Assignment 2
+
+Notes on code:
+
+Instead of using std::vector to store the instructions and basic blocks, I switched
+to using std::list. This is to allow easy insertion and deletion of instructions.
+They will still be implicitly numbered by their order in the lists. Also because
+of this switch, I end up scanning over the instructions a couple more times since
+I separated some of the functionality into different passes.
+
+I have a separate scan to determine which blocks are reachable from Entry, because
+dead code should be ignored in most analyses.
+
+I replaced the given bitvector.c with a C++ version (BitVecSet) using std::bitset
+and std::vector, because I don't want to manage memory.
+
+The natural loop code is in loop.h and loop.cpp.
+
+I'm leaking memory wrt to making new label instructions and new symbols, which
+I'll fix later once we need to modify instructions more.
+
+I wasn't too focused on performance, mostly on simplicity and using library
+functions.
+
+I copied print.h and print.c from printsimple for debugging help.
